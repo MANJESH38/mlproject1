@@ -24,7 +24,7 @@ class DataTransformation:
 
     def get_data_transformer_object(self):
         '''
-        This function is responsible for data trnasformation
+        This function is responsible for data trnasformation based on different types of data
         
         '''
         try:
@@ -36,7 +36,7 @@ class DataTransformation:
                 "lunch",
                 "test_preparation_course",
             ]
-
+            ## create a pipeline for numerical features to handle missing values and scaling they are run on the training dataset
             num_pipeline= Pipeline(
                 steps=[
                 ("imputer",SimpleImputer(strategy="median")),
@@ -44,7 +44,7 @@ class DataTransformation:
 
                 ]
             )
-
+           ## create a pipeline for categorical features to handle missing value and after that they are convert into numerical using one hot encoder and after they are scaled
             cat_pipeline=Pipeline(
 
                 steps=[
@@ -54,7 +54,7 @@ class DataTransformation:
                 ]
 
             )
-
+            ## Display the ctegorical and numerical features
             logging.info(f"Categorical columns: {categorical_columns}")
             logging.info(f"Numerical columns: {numerical_columns}")
 
@@ -74,7 +74,7 @@ class DataTransformation:
             raise CustomException(e,sys)
         
     def initiate_data_transformation(self,train_path,test_path):
-
+        ## starting the data transformation inside this part and they are get from data ingestion
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
@@ -104,14 +104,15 @@ class DataTransformation:
 
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
-
+            ## column wise concatenate kr diya input and output features ko aur numpy array bna deta hai
             train_arr = np.c_[
+                ## yaha pe mai target feature ko array me convert kiya kyuki mera input feature bhi array me hai
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
             logging.info(f"Saved preprocessing object.")
-
+            ## save this pkl file
             save_object(
 
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
