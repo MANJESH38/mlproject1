@@ -29,23 +29,23 @@ def evaluate_models(X_train, y_train,X_test,y_test,models,param):
         for i in range(len(list(models))):
             model = list(models.values())[i]
             para=param[list(models.keys())[i]]
-
+            ## yaha pe hmm grid search cv se best parameters nikal rahe hai
             gs = GridSearchCV(model,para,cv=3)
             gs.fit(X_train,y_train)
-
+            ## yaha pe model pe best parameters set kar diye
             model.set_params(**gs.best_params_)
             model.fit(X_train,y_train)
 
             #model.fit(X_train, y_train)  # Train model
-
+            ## yaha pe prediction kr rhe hai
             y_train_pred = model.predict(X_train)
 
             y_test_pred = model.predict(X_test)
-
+            ## yaha pe r2 score calculate krenge
             train_model_score = r2_score(y_train, y_train_pred)
 
             test_model_score = r2_score(y_test, y_test_pred)
-
+            ## harek algorithm ka kya test score hai wo report me add krdenge
             report[list(models.keys())[i]] = test_model_score
 
         return report

@@ -83,7 +83,7 @@ class ModelTrainer:
                 }
                 
             }
-
+            ## evalute models ko call kiya utills se yaha pe mera pura model report aa jayega
             model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
                                              models=models,param=params)
             
@@ -96,11 +96,11 @@ class ModelTrainer:
                 list(model_report.values()).index(best_model_score)
             ]
             best_model = models[best_model_name]
-
+             ## yaha pe thresold set kr diya ki jo best model milega uska r2 score 0.6 se jyada nhi toh raise customexception kr dena
             if best_model_score<0.6:
                 raise CustomException("No best model found")
             logging.info(f"Best found model on both training and testing dataset")
-
+            ## Agar mil gya 0.6 se jyada ka model toh usse save kr lenge model.pkl file me
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model

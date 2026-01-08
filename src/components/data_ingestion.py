@@ -54,9 +54,11 @@ class DataIngestion:
             raise CustomException(e,sys)
         
 if __name__=="__main__":
+    ## isko hmm ek alag file me bhi bna sakte the but aabhi easy to understand ke liye yaha bnaya hai complex na ho
     obj=DataIngestion()
     train_data,test_data=obj.initiate_data_ingestion()
-
+     
+     ## third wala information aabhi skip ke diya hu kyuki uska use nhi hai
     data_transformation=DataTransformation()
     train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
 
