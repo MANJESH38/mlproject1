@@ -21,6 +21,7 @@ def predict_datapoint():
         return render_template('home.html')
     else:
         data=CustomData(
+            ## read the all the inputs given by user in the form 
             gender=request.form.get('gender'),
             race_ethnicity=request.form.get('ethnicity'),
             parental_level_of_education=request.form.get('parental_level_of_education'),
@@ -30,14 +31,18 @@ def predict_datapoint():
             writing_score=float(request.form.get('writing_score'))
 
         )
+        ## convert upper wale data ko dataframe me
         pred_df=data.get_data_as_data_frame()
         print(pred_df)
         print("Before Prediction")
-
+         ## yaha pe hmne object banaya hai predictpipeline class ka
         predict_pipeline=PredictPipeline()
         print("Mid Prediction")
+        ## yaha pe hmne predictpipeline ke function predict ko call kiya hu jo hmme predicted value dega
         results=predict_pipeline.predict(pred_df)
         print("after Prediction")
+        ## this is in the form of list than they we give the results[0]
+        ## this will read the value by the home.html page
         return render_template('home.html',results=results[0])
     
 

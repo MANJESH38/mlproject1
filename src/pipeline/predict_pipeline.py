@@ -3,6 +3,8 @@ import os
 
 import pandas as pd
 from src.exception import CustomException
+
+## load our pickel file
 from src.utils import load_object
 
 
@@ -16,10 +18,13 @@ class PredictPipeline:
             preprocessor_path=os.path.join('artifacts','preprocessor.pkl')
             
             print("Before Loading")
+            ## they are load the pickel file
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
             print("After Loading")
+            ## features ko scale kiya
             data_scaled=preprocessor.transform(features)
+            ## ab model prediction kiya hai scaled data pe
             preds=model.predict(data_scaled)
             return preds
         
@@ -27,7 +32,7 @@ class PredictPipeline:
             raise CustomException(e,sys)
 
 
-
+## created mapping variable function
 class CustomData:
     def __init__(  self,
         gender: str,
@@ -63,7 +68,7 @@ class CustomData:
                 "reading_score": [self.reading_score],
                 "writing_score": [self.writing_score],
             }
-
+             ## this is return in the form of dataframe
             return pd.DataFrame(custom_data_input_dict)
 
         except Exception as e:
